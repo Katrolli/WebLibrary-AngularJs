@@ -1,6 +1,111 @@
-<div *ngIf="books.length > 0; else noBooks">
-  <div *ngFor="let book of books">
-    <mat-card class="book-card">
+<div class="flex flex-row justify-center pt-4">
+  <button
+    class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+    (click)="showForm()"
+  >
+    Create new Book
+  </button>
+</div>
+
+<div *ngIf="!isCreateBookForm; else displayForm"></div>
+
+<ng-template #displayForm>
+  <div class="flex justify-center pt-3">
+    <form [formGroup]="CreateBookForm" class="space-y-4">
+      <div class="relative rounded-md">
+        <input
+          type="text"
+          formControlName="title"
+          [ngClass]="{
+            'bg-red-500':
+              CreateBookForm.controls['title'].invalid &&
+              CreateBookForm.controls['title'].touched,
+            'text-white':
+              CreateBookForm.controls['title'].invalid &&
+              CreateBookForm.controls['title'].touched
+          }"
+          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          placeholder="Title"
+        />
+      </div>
+
+      <div class="relative rounded-md">
+        <input
+          type="text"
+          [ngClass]="{
+            'bg-red-500':
+              CreateBookForm.controls['description'].invalid &&
+              CreateBookForm.controls['description'].touched,
+            'text-white':
+              CreateBookForm.controls['description'].invalid &&
+              CreateBookForm.controls['description'].touched
+          }"
+          formControlName="description"
+          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          placeholder="Description"
+        />
+      </div>
+
+      <div class="relative rounded-md">
+        <input
+          type="text"
+          [ngClass]="{
+            'bg-red-500':
+              CreateBookForm.controls['imageUrl'].invalid &&
+              CreateBookForm.controls['imageUrl'].touched,
+            'text-white':
+              CreateBookForm.controls['imageUrl'].invalid &&
+              CreateBookForm.controls['imageUrl'].touched
+          }"
+          formControlName="imageUrl"
+          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          placeholder="Image URL"
+        />
+      </div>
+
+      <div class="relative rounded-md">
+        <input
+          type="text"
+          [ngClass]="{
+            'bg-red-500':
+              CreateBookForm.controls['category'].invalid &&
+              CreateBookForm.controls['category'].touched,
+            'text-white':
+              CreateBookForm.controls['category'].invalid &&
+              CreateBookForm.controls['category'].touched
+          }"
+          formControlName="category"
+          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+          placeholder="Category"
+        />
+      </div>
+
+      <div class="flex justify-center pt-4">
+        <button
+          [disabled]="formError"
+          class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+          (click)="submitForm()"
+        >
+          Submit
+        </button>
+      </div>
+
+      <div class="flex justify-center pt-2">
+        <p *ngIf="formError" class="text-red-600">
+          {{ formError }}
+        </p>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #noBooks>
+  <p>No books available.</p>
+</ng-template>
+
+<div *ngIf="books.length > 0; else noBooks" class="flex flex-wrap">
+  <div *ngFor="let book of books" class="bg-red-400 mt-7 w1/4 p-4 ml-20">
+    <mat-card class="book-card h-96">
       <mat-card-header>
         <mat-card-title>Title: {{ book.title }}</mat-card-title>
       </mat-card-header>
@@ -15,29 +120,3 @@
     </mat-card>
   </div>
 </div>
-
-<button mat-button color="primary" (click)="showForm()">Create new Book</button>
-
-<form [formGroup]="CreateBookForm" *ngIf="isCreateBookForm">
-  <mat-form-field class="example-form-field">
-    <mat-label>Title</mat-label>
-    <input matInput type="text" formControlName="title" />
-  </mat-form-field>
-  <mat-form-field class="example-form-field">
-    <mat-label>Description</mat-label>
-    <input matInput type="text" formControlName="description" />
-  </mat-form-field>
-  <mat-form-field class="example-form-field">
-    <mat-label>ImageUrl</mat-label>
-    <input matInput type="text" formControlName="imageUrl" />
-  </mat-form-field>
-  <mat-form-field class="example-form-field">
-    <mat-label>Category</mat-label>
-    <input matInput type="text" formControlName="category" />
-  </mat-form-field>
-  <button (click)="submitForm()">Submit</button>
-</form>
-
-<ng-template #noBooks>
-  <p>No books available.</p>
-</ng-template>

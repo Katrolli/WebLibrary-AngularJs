@@ -1,5 +1,11 @@
 <mat-toolbar class="flex flex-row justify-between" color="primary">
-  <button *ngIf="!isLoggedIn" routerLink="/login">Login</button>
-  <button *ngIf="!isLoggedIn" routerLink="/signup">Signup</button>
-  <button *ngIf="isLoggedIn" (click)="onLogOut()">Logout</button>
+  <button *ngIf="!isLoggedIn" routerLink="/login" class="hover:text-black">
+    Login
+  </button>
+  <button *ngIf="!isLoggedIn" routerLink="/signup" class="hover:text-black">
+    Signup
+  </button>
+  <button *ngIf="isLoggedIn" (click)="onLogOut()" class="hover:text-black">
+    Logout
+  </button>
 </mat-toolbar>
