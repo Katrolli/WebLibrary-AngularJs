@@ -7,8 +7,8 @@
   </button>
 </div>
 
-<div *ngIf="!isCreateBookForm; else displayForm"></div>
-
+<!-- start of create form -->
+<div *ngIf="!isCreateBookForm; else displayForm" id="createForm"></div>
 <ng-template #displayForm>
   <div class="flex justify-center pt-3">
     <form [formGroup]="CreateBookForm" class="space-y-4">
@@ -45,7 +45,6 @@
           placeholder="Description"
         />
       </div>
-
       <div class="relative rounded-md">
         <input
           type="text"
@@ -62,7 +61,6 @@
           placeholder="Image URL"
         />
       </div>
-
       <div class="relative rounded-md">
         <input
           type="text"
@@ -79,17 +77,14 @@
           placeholder="Category"
         />
       </div>
-
       <div class="flex justify-center pt-4">
         <button
-          [disabled]="formError"
           class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
-          (click)="submitForm()"
+          (click)="submitCreateForm()"
         >
           Submit
         </button>
       </div>
-
       <div class="flex justify-center pt-2">
         <p *ngIf="formError" class="text-red-600">
           {{ formError }}
@@ -98,6 +93,7 @@
     </form>
   </div>
 </ng-template>
+<!-- end of create form -->
 
 <ng-template #noBooks>
   <p>No books available.</p>
@@ -106,15 +102,47 @@
 <div *ngIf="books.length > 0; else noBooks" class="flex flex-wrap">
   <div *ngFor="let book of books" class="bg-red-400 mt-7 w1/4 p-4 ml-20">
     <mat-card class="book-card h-96">
-      <mat-card-header>
-        <mat-card-title>Title: {{ book.title }}</mat-card-title>
+      <mat-card-header class="justify-center">
+        <mat-card-title>
+          <span *ngIf="!book.editing">Title: {{ book.title }}</span>
+          <input
+            *ngIf="book.editing"
+            [(ngModel)]="book.title"
+            placeholder="Title"
+          />
+        </mat-card-title>
       </mat-card-header>
-      <mat-card-content>
-        <p>Description: {{ book.description }}</p>
-        <p>Author: {{ book.author.name }}</p>
+      <mat-card-content class="text-center">
+        <span *ngIf="!book.editing">Description: {{ book.description }}</span>
+        <input
+          *ngIf="book.editing"
+          [(ngModel)]="book.description"
+          placeholder="Description"
+        />
       </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>Update</button>
+      <mat-card-content class="text-center">
+        <span *ngIf="!book.editing">Author: {{ book.author.name }}</span>
+        <input
+          *ngIf="book.editing"
+          [(ngModel)]="book.author.name"
+          placeholder="Author"
+        />
+      </mat-card-content>
+      <mat-card-content class="text-center">
+        <span *ngIf="!book.editing">Category: {{ book.category.name }}</span>
+        <input
+          *ngIf="book.editing"
+          [(ngModel)]="book.category.name"
+          placeholder="Category"
+        />
+      </mat-card-content>
+      <mat-card-actions class="justify-center !pt-56">
+        <button mat-button (click)="toggleEdit(book)">
+          {{ book.editing ? "Save" : "Update" }}
+        </button>
+        <button *ngIf="book.editing" mat-button (click)="cancelEdit(book)">
+          Cancel
+        </button>
         <button mat-button (click)="onDeleteBook(book.id)">Delete</button>
       </mat-card-actions>
     </mat-card>

@@ -11,16 +11,21 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class BooksComponent implements OnInit, OnDestroy {
   books: any = [];
+  originalBookData: any = {};
   public CreateBookForm!: FormGroup;
   isCreateBookForm: boolean = false;
+  selectedBookId: string | null = null;
   formError: string | null = null;
-  private destroy = new Subject<void>();
+  private destroySub = new Subject<void>();
 
   constructor(private bookService: BookService) {}
 
   ngOnInit(): void {
     this.bookService.getBooks().subscribe((BooksArray) => {
-      this.books = BooksArray;
+      this.books = BooksArray.map((book: any) => ({
+        ...book,
+        editing: false,
+      }));
     });
   }
 
@@ -39,7 +44,7 @@ export class BooksComponent implements OnInit, OnDestroy {
         category: new FormControl('', Validators.required),
       });
       this.CreateBookForm.valueChanges
-        .pipe(takeUntil(this.destroy))
+        .pipe(takeUntil(this.destroySub))
         .subscribe(() => {
           this.formError = null;
         });
@@ -49,7 +54,50 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
   }
 
-  submitForm() {
+  toggleEdit(book: any) {
+    if (book.editing) {
+      this.updateBookOnServer(book);
+      delete this.originalBookData[book.id];
+    } else {
+      this.originalBookData[book.id] = { ...book };
+    }
+    book.editing = !book.editing;
+  }
+
+  cancelEdit(book: any) {
+    if (this.originalBookData[book.id]) {
+      Object.assign(book, this.originalBookData[book.id]);
+      delete this.originalBookData[book.id];
+    }
+    book.editing = false;
+  }
+
+  updateBookOnServer(book: any) {
+    this.bookService
+      .updateBook(
+        book.id,
+        book.title,
+        book.description,
+        book.author.name,
+        book.imageUrl,
+        book.category.name
+      )
+      .subscribe(
+        (updatedBook) => {
+          const index = this.books.findIndex((b: any) => b.id === book.id);
+          if (index !== -1) {
+            this.books[index] = updatedBook;
+          }
+        },
+        (err) => {
+          this.formError =
+            err.message || 'An error occurred while updating the book.';
+          console.error(err);
+        }
+      );
+  }
+
+  submitCreateForm() {
     if (this.CreateBookForm.valid) {
       this.bookService
         .createBook(
@@ -73,7 +121,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    this.destroy.next();
-    this.destroy.complete();
+    this.destroySub.next();
+    this.destroySub.complete();
   }
 }

@@ -28,4 +28,23 @@ export class BookService {
     };
     return this.http.post(enviroment.api_url + '/books', payload);
   }
+
+  updateBook(
+    id: string,
+    newTitle: string,
+    newDescription: string,
+    newAuthor: string,
+    newImageUrl: string,
+    newCategory: string
+  ): Observable<any> {
+    let payload = {
+      title: newTitle,
+      description: newDescription,
+      authorId: newAuthor,
+      imageUrl: newImageUrl,
+      category: newCategory,
+    };
+
+    return this.http.patch(enviroment.api_url + '/books/' + id, payload);
+  }
 }
