@@ -69,6 +69,7 @@
     </div>
     <div class="flex justify-center pt-4 space-x-4">
       <button
+        *ngIf="!formError"
         (click)="submitCreateForm()"
         class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
       >
@@ -99,38 +100,78 @@
   >
     <div class="relative rounded-md pt-8">
       <input
+        [ngClass]="{
+          'bg-red-500':
+            UpdateBookForm.controls['title'].invalid &&
+            UpdateBookForm.controls['title'].touched,
+          'text-white':
+            UpdateBookForm.controls['title'].invalid &&
+            UpdateBookForm.controls['title'].touched
+        }"
         type="text"
         formControlName="title"
         class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         placeholder="Title"
       />
     </div>
-    <div class="relative rounded-md">
+    <div class="relative rounded-md p-2">
       <input
+        [ngClass]="{
+          'bg-red-500':
+            UpdateBookForm.controls['description'].invalid &&
+            UpdateBookForm.controls['description'].touched,
+          'text-white':
+            UpdateBookForm.controls['description'].invalid &&
+            UpdateBookForm.controls['description'].touched
+        }"
         type="text"
         formControlName="description"
         class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         placeholder="Description"
       />
     </div>
-    <div class="relative rounded-md">
+    <div class="relative rounded-md p-2">
       <input
+        [ngClass]="{
+          'bg-red-500':
+            UpdateBookForm.controls['imageUrl'].invalid &&
+            UpdateBookForm.controls['imageUrl'].touched,
+          'text-white':
+            UpdateBookForm.controls['imageUrl'].invalid &&
+            UpdateBookForm.controls['imageUrl'].touched
+        }"
         type="text"
         formControlName="imageUrl"
         class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         placeholder="Image URL"
       />
     </div>
-    <div class="relative rounded-md">
+    <div class="relative rounded-md p-2">
       <input
+        [ngClass]="{
+          'bg-red-500':
+            UpdateBookForm.controls['category'].invalid &&
+            UpdateBookForm.controls['category'].touched,
+          'text-white':
+            UpdateBookForm.controls['category'].invalid &&
+            UpdateBookForm.controls['category'].touched
+        }"
         type="text"
         formControlName="category"
         class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
         placeholder="Category"
       />
     </div>
-    <div class="relative rounded-md">
+    <div class="relative rounded-md p-2">
       <input
+        [ngClass]="{
+          'bg-red-500':
+            UpdateBookForm.controls['author'].invalid &&
+            UpdateBookForm.controls['author'].touched,
+          'text-white':
+            UpdateBookForm.controls['author'].invalid &&
+            UpdateBookForm.controls['author'].touched
+        }"
         type="text"
         formControlName="author"
         class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
@@ -150,6 +191,11 @@
       >
         Close
       </button>
+    </div>
+    <div>
+      <p *ngIf="formError" class="text-red-600 text-center">
+        {{ formError }}
+      </p>
     </div>
   </form>
 </div>

@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
-import { BooksComponent } from '../books.component';
 import { BookService } from '../services/book.service';
 
 export interface BookData {
@@ -53,7 +52,6 @@ export class BookModal implements OnDestroy, OnInit {
 
     if (this.data) {
       // Update UpdateBookForm values if data is available
-
       this.UpdateBookForm.patchValue({
         id: this.data.id,
         title: this.data.title,
@@ -63,10 +61,26 @@ export class BookModal implements OnDestroy, OnInit {
         author: this.data.author,
       });
     }
+    this.CreateBookForm.statusChanges
+      .pipe(takeUntil(this.destroySub))
+      .subscribe((status) => {
+        if (status === 'VALID') {
+          this.formError = null;
+        }
+      });
+
+    this.UpdateBookForm.statusChanges
+      .pipe(takeUntil(this.destroySub))
+      .subscribe((status) => {
+        if (status === 'VALID') {
+          this.formError = null;
+        }
+      });
   }
 
   submitCreateForm() {
     if (this.CreateBookForm.valid) {
+      this.formError = null;
       this.bookService
         .createBook(
           this.CreateBookForm.get('title')?.value,
@@ -74,6 +88,7 @@ export class BookModal implements OnDestroy, OnInit {
           this.CreateBookForm.get('imageUrl')?.value,
           this.CreateBookForm.get('category')?.value
         )
+        .pipe(takeUntil(this.destroySub))
         .subscribe(
           (data) => {
             this.bookService.addBook(data);
@@ -84,13 +99,15 @@ export class BookModal implements OnDestroy, OnInit {
             console.error(err);
           }
         );
+      this.closeModal();
     } else {
-      this.formError = 'Please correct the form before submitting.';
+      this.formError = 'Please correct the form.';
     }
   }
 
   submitUpdateForm() {
     if (this.UpdateBookForm.valid) {
+      this.formError = null;
       this.bookService
         .updateBook(
           this.data.id,
@@ -100,6 +117,7 @@ export class BookModal implements OnDestroy, OnInit {
           this.UpdateBookForm.get('imageUrl')?.value,
           this.UpdateBookForm.get('category')?.value
         )
+        .pipe(takeUntil(this.destroySub))
         .subscribe(
           (updatedBook) => {
             this.bookService.updateBookInList(updatedBook);
@@ -109,8 +127,9 @@ export class BookModal implements OnDestroy, OnInit {
             console.error(err);
           }
         );
+      this.closeModal();
     } else {
-      this.formError = 'Please correct the form before submitting.';
+      this.formError = 'Please correct the form.';
     }
   }
 

@@ -3,7 +3,7 @@
     class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
     (click)="toggleCreate()"
   >
-    {{ !isCreateBookForm ? "Create New Book" : "Cancel" }}
+    Crate New Book
   </button>
 </div>
 
@@ -16,46 +16,20 @@
     <mat-card class="book-card h-96">
       <mat-card-header class="justify-center !pt-6">
         <mat-card-title>
-          <span *ngIf="!book.editing">Title: {{ book.title }}</span>
-          <input
-            class="text-center border border-solid border-black w-48"
-            *ngIf="book.editing"
-            [(ngModel)]="book.title"
-            placeholder="Title"
-          />
+          <span>Title: {{ book.title }}</span>
         </mat-card-title>
       </mat-card-header>
       <mat-card-content class="text-center !pt-5">
-        <span *ngIf="!book.editing">Description: {{ book.description }}</span>
-        <input
-          class="text-center border border-solid border-black w-48"
-          *ngIf="book.editing"
-          [(ngModel)]="book.description"
-          placeholder="Description"
-        />
+        <span>Description: {{ book.description }}</span>
       </mat-card-content>
       <mat-card-content class="text-center !pt-5">
-        <span *ngIf="!book.editing">Author: {{ book.author.name }}</span>
-        <input
-          class="text-center border border-solid border-black w-48"
-          *ngIf="book.editing"
-          [(ngModel)]="book.author.name"
-          placeholder="Author"
-        />
+        <span>Author: {{ book.author.name }}</span>
       </mat-card-content>
       <mat-card-content class="text-center !pt-5">
-        <span *ngIf="!book.editing">Category: {{ book.category.name }}</span>
-        <input
-          class="text-center border border-solid border-black w-48"
-          *ngIf="book.editing"
-          [(ngModel)]="book.category.name"
-          placeholder="Category"
-        />
+        <span>Category: {{ book.category.name }}</span>
       </mat-card-content>
       <mat-card-actions class="justify-center !pt-44">
-        <button mat-button (click)="toggleEdit(book)">
-          {{ book.editing ? "Save" : "Update" }}
-        </button>
+        <button mat-button (click)="toggleEdit(book)">Update</button>
         <button *ngIf="book.editing" mat-button>Cancel</button>
         <button mat-button (click)="onDeleteBook(book.id)">Delete</button>
       </mat-card-actions>

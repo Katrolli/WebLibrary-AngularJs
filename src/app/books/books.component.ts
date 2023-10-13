@@ -13,17 +13,9 @@ import { BookModal } from './book-modal/book-modal.component';
 })
 export class BooksComponent implements OnInit, OnDestroy {
   books: any = [];
-  isCreateBookForm: boolean = false;
-
   private destroySub = new Subject<void>();
 
-  constructor(private bookService: BookService, private modal: MatDialog) {
-    // this.bookService.books
-    //   .pipe(takeUntil(this.destroySub))
-    //   .subscribe((books) => {
-    //     this.books = books;
-    //   });
-  }
+  constructor(private bookService: BookService, private modal: MatDialog) {}
 
   ngOnInit(): void {
     this.bookService.books
