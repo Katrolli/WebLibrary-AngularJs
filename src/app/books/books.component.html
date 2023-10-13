@@ -1,99 +1,11 @@
 <div class="flex flex-row justify-center pt-4">
   <button
     class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
-    (click)="showForm()"
+    (click)="toggleCreate()"
   >
-    Create new Book
+    {{ !isCreateBookForm ? "Create New Book" : "Cancel" }}
   </button>
 </div>
-
-<!-- start of create form -->
-<div *ngIf="!isCreateBookForm; else displayForm" id="createForm"></div>
-<ng-template #displayForm>
-  <div class="flex justify-center pt-3">
-    <form [formGroup]="CreateBookForm" class="space-y-4">
-      <div class="relative rounded-md">
-        <input
-          type="text"
-          formControlName="title"
-          [ngClass]="{
-            'bg-red-500':
-              CreateBookForm.controls['title'].invalid &&
-              CreateBookForm.controls['title'].touched,
-            'text-white':
-              CreateBookForm.controls['title'].invalid &&
-              CreateBookForm.controls['title'].touched
-          }"
-          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-          placeholder="Title"
-        />
-      </div>
-
-      <div class="relative rounded-md">
-        <input
-          type="text"
-          [ngClass]="{
-            'bg-red-500':
-              CreateBookForm.controls['description'].invalid &&
-              CreateBookForm.controls['description'].touched,
-            'text-white':
-              CreateBookForm.controls['description'].invalid &&
-              CreateBookForm.controls['description'].touched
-          }"
-          formControlName="description"
-          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-          placeholder="Description"
-        />
-      </div>
-      <div class="relative rounded-md">
-        <input
-          type="text"
-          [ngClass]="{
-            'bg-red-500':
-              CreateBookForm.controls['imageUrl'].invalid &&
-              CreateBookForm.controls['imageUrl'].touched,
-            'text-white':
-              CreateBookForm.controls['imageUrl'].invalid &&
-              CreateBookForm.controls['imageUrl'].touched
-          }"
-          formControlName="imageUrl"
-          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-          placeholder="Image URL"
-        />
-      </div>
-      <div class="relative rounded-md">
-        <input
-          type="text"
-          [ngClass]="{
-            'bg-red-500':
-              CreateBookForm.controls['category'].invalid &&
-              CreateBookForm.controls['category'].touched,
-            'text-white':
-              CreateBookForm.controls['category'].invalid &&
-              CreateBookForm.controls['category'].touched
-          }"
-          formControlName="category"
-          class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-          placeholder="Category"
-        />
-      </div>
-      <div class="flex justify-center pt-4">
-        <button
-          class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
-          (click)="submitCreateForm()"
-        >
-          Submit
-        </button>
-      </div>
-      <div class="flex justify-center pt-2">
-        <p *ngIf="formError" class="text-red-600">
-          {{ formError }}
-        </p>
-      </div>
-    </form>
-  </div>
-</ng-template>
-<!-- end of create form -->
 
 <ng-template #noBooks>
   <p>No books available.</p>
@@ -102,47 +14,49 @@
 <div *ngIf="books.length > 0; else noBooks" class="flex flex-wrap">
   <div *ngFor="let book of books" class="bg-red-400 mt-7 w1/4 p-4 ml-20">
     <mat-card class="book-card h-96">
-      <mat-card-header class="justify-center">
+      <mat-card-header class="justify-center !pt-6">
         <mat-card-title>
           <span *ngIf="!book.editing">Title: {{ book.title }}</span>
           <input
+            class="text-center border border-solid border-black w-48"
             *ngIf="book.editing"
             [(ngModel)]="book.title"
             placeholder="Title"
           />
         </mat-card-title>
       </mat-card-header>
-      <mat-card-content class="text-center">
+      <mat-card-content class="text-center !pt-5">
         <span *ngIf="!book.editing">Description: {{ book.description }}</span>
         <input
+          class="text-center border border-solid border-black w-48"
           *ngIf="book.editing"
           [(ngModel)]="book.description"
           placeholder="Description"
         />
       </mat-card-content>
-      <mat-card-content class="text-center">
+      <mat-card-content class="text-center !pt-5">
         <span *ngIf="!book.editing">Author: {{ book.author.name }}</span>
         <input
+          class="text-center border border-solid border-black w-48"
           *ngIf="book.editing"
           [(ngModel)]="book.author.name"
           placeholder="Author"
         />
       </mat-card-content>
-      <mat-card-content class="text-center">
+      <mat-card-content class="text-center !pt-5">
         <span *ngIf="!book.editing">Category: {{ book.category.name }}</span>
         <input
+          class="text-center border border-solid border-black w-48"
           *ngIf="book.editing"
           [(ngModel)]="book.category.name"
           placeholder="Category"
         />
       </mat-card-content>
-      <mat-card-actions class="justify-center !pt-56">
+      <mat-card-actions class="justify-center !pt-44">
         <button mat-button (click)="toggleEdit(book)">
           {{ book.editing ? "Save" : "Update" }}
         </button>
-        <button *ngIf="book.editing" mat-button (click)="cancelEdit(book)">
-          Cancel
-        </button>
+        <button *ngIf="book.editing" mat-button>Cancel</button>
         <button mat-button (click)="onDeleteBook(book.id)">Delete</button>
       </mat-card-actions>
     </mat-card>

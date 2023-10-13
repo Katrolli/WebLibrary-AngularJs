@@ -20,6 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { TokenInterceptor } from './helpers/token.interceptor';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BookModal } from './books/book-modal/book-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { TokenInterceptor } from './helpers/token.interceptor';
     SignupComponent,
     LoginComponent,
     HeaderComponent,
+    BookModal,
   ],
   imports: [
     BrowserModule,
@@ -43,10 +46,13 @@ import { TokenInterceptor } from './helpers/token.interceptor';
     MatInputModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    MatDialogModule,
   ],
+
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
+
   bootstrap: [AppComponent],
 })
 export class AppModule {}

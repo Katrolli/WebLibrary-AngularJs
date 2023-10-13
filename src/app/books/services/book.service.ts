@@ -2,10 +2,39 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { enviroment } from 'src/env';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BookService {
-  constructor(private http: HttpClient) {}
+  private booksSubject = new BehaviorSubject<any>([]);
+  public books = this.booksSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.refreshBooks();
+  }
+
+  updateBookInList(updatedBook: any) {
+    // Logic to update the book in the BehaviorSubject list
+    const currentBooks = this.booksSubject.getValue();
+    const index = currentBooks.findIndex(
+      (book: any) => book.id === updatedBook.id
+    );
+    if (index !== -1) {
+      currentBooks[index] = updatedBook;
+      this.booksSubject.next([...currentBooks]);
+    }
+  }
+
+  refreshBooks() {
+    this.getBooks().subscribe((books: any) => {
+      this.booksSubject.next(books);
+    });
+  }
+
+  addBook(newBook: any) {
+    const currentBooks = this.booksSubject.getValue();
+    this.booksSubject.next([...currentBooks, newBook]);
+  }
 
   getBooks(): Observable<any> {
     return this.http.get(enviroment.api_url + '/books');

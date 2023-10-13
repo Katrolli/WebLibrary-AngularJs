@@ -25,4 +25,10 @@ export class LoginComponent implements OnInit {
       this.loginForm.get('password')!.value
     );
   }
+  public onAdminSubmit() {
+    this.authService.adminLogin(
+      this.loginForm.get('email')!.value,
+      this.loginForm.get('password')!.value
+    );
+  }
 }

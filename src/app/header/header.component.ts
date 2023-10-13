@@ -1,4 +1,4 @@
-import { Component, DoCheck } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
@@ -8,14 +8,24 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class HeaderComponent implements DoCheck {
   isLoggedIn: boolean = false;
+  userName: any;
 
   constructor(private authService: AuthenticationService) {}
 
   ngDoCheck(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
+    this.userName = this.setUserData();
   }
 
   onLogOut() {
     this.authService.logOut();
+  }
+
+  setUserData() {
+    const data = localStorage.getItem('UserData');
+    if (data) {
+      let userObj = JSON.parse(data);
+      return userObj.name;
+    }
   }
 }

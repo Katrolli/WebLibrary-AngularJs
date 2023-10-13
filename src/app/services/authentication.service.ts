@@ -20,6 +20,15 @@ export class AuthenticationService {
     });
   }
 
+  public adminLogin(email: string, password: string) {
+    this.authClient.adminLogin(email, password).subscribe((token) => {
+      localStorage.setItem('accessToken', token);
+      const decodedToken = this.decodeToken(token);
+      this.setUserData(decodedToken);
+      this.router.navigate(['/books']);
+    });
+  }
+
   public signUp(name: string, email: string, password: string) {
     this.authClient.signup(name, email, password).subscribe(
       (user) => {

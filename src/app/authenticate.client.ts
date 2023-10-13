@@ -19,6 +19,17 @@ export class AuthenticateClient {
     );
   }
 
+  public adminLogin(email: string, password: string): Observable<string> {
+    return this.httpClient.post(
+      enviroment.api_url + '/auth/admin',
+      {
+        email: email,
+        password: password,
+      },
+      { responseType: 'text' }
+    );
+  }
+
   public signup(
     name: string,
     email: string,

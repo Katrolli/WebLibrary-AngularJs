@@ -4,7 +4,11 @@
   fxLayoutAlign="center"
 >
   <mat-card class="authentication-card">
-    <mat-card-header> <mat-card-title>Login</mat-card-title></mat-card-header>
+    <mat-card-header class="justify-center">
+      <mat-card-title>
+        <p>Login</p>
+      </mat-card-title></mat-card-header
+    >
     <mat-card-content>
       <form
         [formGroup]="loginForm"
@@ -23,10 +27,19 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" (click)="onSubmit()">
-        Login
+        <span> Login </span>
       </button>
+
       <button mat-button routerLink="/signup" routerLinkActive="active">
-        Don't have an account? Signup here.
+        <span class="pl-14 pr-12"> Don't have an account? Signup here. </span>
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onAdminSubmit()"
+        class="w-24"
+      >
+        <span class="">Admin Login</span>
       </button>
     </mat-card-actions>
   </mat-card>

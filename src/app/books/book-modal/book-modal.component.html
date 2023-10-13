@@ -1,0 +1,156 @@
+<!-- start of create form -->
+
+<div class="flex justify-center w-56" *ngIf="!data">
+  <form [formGroup]="CreateBookForm" class="space-y-4">
+    <div class="relative rounded-md pt-8">
+      <input
+        type="text"
+        formControlName="title"
+        [ngClass]="{
+          'bg-red-500':
+            CreateBookForm.controls['title'].invalid &&
+            CreateBookForm.controls['title'].touched,
+          'text-white':
+            CreateBookForm.controls['title'].invalid &&
+            CreateBookForm.controls['title'].touched
+        }"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Title"
+      />
+    </div>
+
+    <div class="relative rounded-md p-2">
+      <input
+        type="text"
+        [ngClass]="{
+          'bg-red-500':
+            CreateBookForm.controls['description'].invalid &&
+            CreateBookForm.controls['description'].touched,
+          'text-white':
+            CreateBookForm.controls['description'].invalid &&
+            CreateBookForm.controls['description'].touched
+        }"
+        formControlName="description"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Description"
+      />
+    </div>
+    <div class="relative rounded-md p-2">
+      <input
+        type="text"
+        [ngClass]="{
+          'bg-red-500':
+            CreateBookForm.controls['imageUrl'].invalid &&
+            CreateBookForm.controls['imageUrl'].touched,
+          'text-white':
+            CreateBookForm.controls['imageUrl'].invalid &&
+            CreateBookForm.controls['imageUrl'].touched
+        }"
+        formControlName="imageUrl"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Image URL"
+      />
+    </div>
+    <div class="relative rounded-md p-2">
+      <input
+        type="text"
+        [ngClass]="{
+          'bg-red-500':
+            CreateBookForm.controls['category'].invalid &&
+            CreateBookForm.controls['category'].touched,
+          'text-white':
+            CreateBookForm.controls['category'].invalid &&
+            CreateBookForm.controls['category'].touched
+        }"
+        formControlName="category"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Category"
+      />
+    </div>
+    <div class="flex justify-center pt-4 space-x-4">
+      <button
+        (click)="submitCreateForm()"
+        class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+      >
+        Submit
+      </button>
+      <button
+        (click)="closeModal()"
+        class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+      >
+        Close
+      </button>
+    </div>
+    <div class="flex justify-center pt-2">
+      <p *ngIf="formError" class="text-red-600">
+        {{ formError }}
+      </p>
+    </div>
+  </form>
+</div>
+<!-- end of create form -->
+
+<!-- Start update form -->
+<div class="flex justify-center w-56" *ngIf="data">
+  <form
+    [formGroup]="UpdateBookForm"
+    class="space-y-4"
+    *ngIf="data && UpdateBookForm"
+  >
+    <div class="relative rounded-md pt-8">
+      <input
+        type="text"
+        formControlName="title"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Title"
+      />
+    </div>
+    <div class="relative rounded-md">
+      <input
+        type="text"
+        formControlName="description"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Description"
+      />
+    </div>
+    <div class="relative rounded-md">
+      <input
+        type="text"
+        formControlName="imageUrl"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Image URL"
+      />
+    </div>
+    <div class="relative rounded-md">
+      <input
+        type="text"
+        formControlName="category"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Category"
+      />
+    </div>
+    <div class="relative rounded-md">
+      <input
+        type="text"
+        formControlName="author"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="Author"
+      />
+    </div>
+    <div class="flex justify-center pt-4 space-x-4">
+      <button
+        (click)="submitUpdateForm()"
+        class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+      >
+        Update
+      </button>
+      <button
+        (click)="closeModal()"
+        class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+      >
+        Close
+      </button>
+    </div>
+  </form>
+</div>
+<!-- End of update form -->
