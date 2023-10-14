@@ -28,7 +28,10 @@
       <mat-card-content class="text-center !pt-5">
         <span>Category: {{ book.category.name }}</span>
       </mat-card-content>
-      <mat-card-actions class="justify-center !pt-44">
+      <mat-card-content class="text-center !pt-2">
+        <img [src]="apiUrl + book.imageUrl" alt="Example image" />
+      </mat-card-content>
+      <mat-card-actions class="justify-center !pt-10">
         <button mat-button (click)="toggleEdit(book)">Update</button>
         <button *ngIf="book.editing" mat-button>Cancel</button>
         <button mat-button (click)="onDeleteBook(book.id)">Delete</button>

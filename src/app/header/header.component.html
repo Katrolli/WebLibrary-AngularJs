@@ -9,9 +9,6 @@
   <button *ngIf="isLoggedIn" routerLink="/books" class="hover:text-black">
     Books
   </button>
-  <button *ngIf="isLoggedIn" (click)="onLogOut()" class="hover:text-black">
-    Logout
-  </button>
 
   <div class="flex-grow"></div>
 
@@ -20,5 +17,8 @@
 
   <ng-template #loggedInTemplate>
     <span class="text-white">Welcome : {{ userName }}</span>
+    <button *ngIf="isLoggedIn" (click)="onLogOut()" class="hover:text-black">
+      Logout
+    </button>
   </ng-template>
 </mat-toolbar>

@@ -36,20 +36,7 @@
       />
     </div>
     <div class="relative rounded-md p-2">
-      <input
-        type="text"
-        [ngClass]="{
-          'bg-red-500':
-            CreateBookForm.controls['imageUrl'].invalid &&
-            CreateBookForm.controls['imageUrl'].touched,
-          'text-white':
-            CreateBookForm.controls['imageUrl'].invalid &&
-            CreateBookForm.controls['imageUrl'].touched
-        }"
-        formControlName="imageUrl"
-        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        placeholder="Image URL"
-      />
+      <input type="file" (change)="onFileChange($event)" />
     </div>
     <div class="relative rounded-md p-2">
       <input
@@ -98,7 +85,8 @@
     class="space-y-4"
     *ngIf="data && UpdateBookForm"
   >
-    <div class="relative rounded-md pt-8">
+    <div class="relative rounded-md pt-8 text-center">
+      <p class="text-xl">Title</p>
       <input
         [ngClass]="{
           'bg-red-500':
@@ -114,7 +102,8 @@
         placeholder="Title"
       />
     </div>
-    <div class="relative rounded-md p-2">
+    <div class="relative rounded-md p-2 text-center">
+      <p class="text-xl">Description</p>
       <input
         [ngClass]="{
           'bg-red-500':
@@ -130,7 +119,8 @@
         placeholder="Description"
       />
     </div>
-    <div class="relative rounded-md p-2">
+    <div class="relative rounded-md p-2 text-center">
+      <p class="text-xl">Image</p>
       <input
         [ngClass]="{
           'bg-red-500':
@@ -146,7 +136,8 @@
         placeholder="Image URL"
       />
     </div>
-    <div class="relative rounded-md p-2">
+    <div class="relative rounded-md p-2 text-center">
+      <p class="text-xl">Category</p>
       <input
         [ngClass]="{
           'bg-red-500':
@@ -162,7 +153,8 @@
         placeholder="Category"
       />
     </div>
-    <div class="relative rounded-md p-2">
+    <div class="relative rounded-md p-2 text-center">
+      <p class="text-xl">Author</p>
       <input
         [ngClass]="{
           'bg-red-500':

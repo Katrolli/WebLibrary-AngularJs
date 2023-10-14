@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BookService } from './services/book.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Subject, takeUntil } from 'rxjs';
 import { BookModal } from './book-modal/book-modal.component';
+import { enviroment } from 'src/env';
 
 @Component({
   selector: 'app-books',
@@ -12,12 +12,15 @@ import { BookModal } from './book-modal/book-modal.component';
   styleUrls: ['./books.component.css'],
 })
 export class BooksComponent implements OnInit, OnDestroy {
+  apiUrl = enviroment.api_url + '/';
   books: any = [];
   private destroySub = new Subject<void>();
 
   constructor(private bookService: BookService, private modal: MatDialog) {}
 
   ngOnInit(): void {
+    console.log(this.books);
+
     this.bookService.books
       .pipe(takeUntil(this.destroySub))
       .subscribe((books) => {
@@ -26,9 +29,15 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   onDeleteBook(bookId: string) {
-    this.bookService.deleteBook(bookId).subscribe(() => {
-      this.books = this.books.filter((book: any) => book.id !== bookId);
-    });
+    console.log(this.books);
+
+    this.bookService
+      .deleteBook(bookId)
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(() => {
+        this.bookService.refreshBookOnDelete(bookId);
+      });
+    console.log(this.books);
   }
 
   toggleCreate() {

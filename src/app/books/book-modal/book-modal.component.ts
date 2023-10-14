@@ -26,6 +26,7 @@ export class BookModal implements OnDestroy, OnInit {
   public CreateBookForm!: FormGroup;
   public UpdateBookForm!: FormGroup;
   formError: string | null = null;
+  selectedFile: File | null = null;
   private destroySub = new Subject<void>();
 
   constructor(
@@ -39,7 +40,7 @@ export class BookModal implements OnDestroy, OnInit {
     this.CreateBookForm = this.fb.group({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      imageUrl: new FormControl('', Validators.required),
+      // imageUrl: new FormControl('', Validators.required),
       category: new FormControl('', Validators.required),
     });
     this.UpdateBookForm = this.fb.group({
@@ -51,7 +52,6 @@ export class BookModal implements OnDestroy, OnInit {
     });
 
     if (this.data) {
-      // Update UpdateBookForm values if data is available
       this.UpdateBookForm.patchValue({
         id: this.data.id,
         title: this.data.title,
@@ -78,31 +78,57 @@ export class BookModal implements OnDestroy, OnInit {
       });
   }
 
-  submitCreateForm() {
-    if (this.CreateBookForm.valid) {
-      this.formError = null;
-      this.bookService
-        .createBook(
-          this.CreateBookForm.get('title')?.value,
-          this.CreateBookForm.get('description')?.value,
-          this.CreateBookForm.get('imageUrl')?.value,
-          this.CreateBookForm.get('category')?.value
-        )
-        .pipe(takeUntil(this.destroySub))
-        .subscribe(
-          (data) => {
-            this.bookService.addBook(data);
-          },
-          (err) => {
-            this.formError =
-              err.message || 'An error occurred while submitting the form.';
-            console.error(err);
-          }
-        );
-      this.closeModal();
-    } else {
-      this.formError = 'Please correct the form.';
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
     }
+  }
+  submitCreateForm() {
+    console.log('entered form');
+
+    if (!this.CreateBookForm.valid) {
+      console.log('failed validation');
+      return (this.formError = 'Please correct the form.');
+    }
+
+    this.formError = null;
+    const CreateFormData = new FormData();
+
+    CreateFormData.append('title', this.CreateBookForm.get('title')?.value);
+    CreateFormData.append(
+      'description',
+      this.CreateBookForm.get('description')?.value
+    );
+    CreateFormData.append(
+      'category',
+      this.CreateBookForm.get('category')?.value
+    );
+
+    if (this.selectedFile) {
+      CreateFormData.append(
+        'imageUrl',
+        this.selectedFile,
+        this.selectedFile.name
+      );
+    }
+    console.log('before book service');
+
+    this.bookService.createBook(CreateFormData).subscribe({
+      next: (newBook) => {
+        console.log('new book created here');
+        this.bookService.refreshBookOnCreate(newBook);
+      },
+      error: (err: any) => {
+        this.formError =
+          err.message || 'An error occurred while submitting the form.';
+        console.error(err);
+      },
+    });
+    console.log('after book service');
+    this.closeModal();
+    return;
   }
 
   submitUpdateForm() {
@@ -120,7 +146,7 @@ export class BookModal implements OnDestroy, OnInit {
         .pipe(takeUntil(this.destroySub))
         .subscribe(
           (updatedBook) => {
-            this.bookService.updateBookInList(updatedBook);
+            this.bookService.refreshBookOnUpdate(updatedBook);
           },
           (err) => {
             this.formError = err.message || 'An error occurred while updating.';
