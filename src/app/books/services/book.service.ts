@@ -53,26 +53,10 @@ export class BookService {
     return this.http.delete(enviroment.api_url + '/books/' + id);
   }
 
-  createBook(book: any): Observable<any> {
+  createBook(book: FormData): Observable<any> {
     return this.http.post(enviroment.api_url + '/books', book);
   }
-
-  updateBook(
-    id: string,
-    newTitle: string,
-    newDescription: string,
-    newAuthor: string,
-    newImageUrl: string,
-    newCategory: string
-  ): Observable<any> {
-    let payload = {
-      title: newTitle,
-      description: newDescription,
-      authorId: newAuthor,
-      imageUrl: newImageUrl,
-      category: newCategory,
-    };
-
-    return this.http.patch(enviroment.api_url + '/books/' + id, payload);
+  updateBook(id: string, formData: FormData): Observable<any> {
+    return this.http.patch(`${enviroment.api_url}/books/${id}`, formData);
   }
 }

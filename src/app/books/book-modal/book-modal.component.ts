@@ -132,31 +132,56 @@ export class BookModal implements OnDestroy, OnInit {
   }
 
   submitUpdateForm() {
-    if (this.UpdateBookForm.valid) {
-      this.formError = null;
+    if (!this.UpdateBookForm.valid) {
+      console.log('failed validation');
+      return (this.formError = 'Please correct the form.');
+    }
+    this.formError = null;
+    const updateFormData = new FormData();
+    updateFormData.append('title', this.UpdateBookForm.get('title')?.value);
+    updateFormData.append(
+      'description',
+      this.UpdateBookForm.get('description')?.value
+    );
+    updateFormData.append(
+      'category',
+      this.UpdateBookForm.get('category')?.value
+    );
+    updateFormData.append('author', this.UpdateBookForm.get('author')?.value);
+
+    if (this.selectedFile) {
+      updateFormData.append(
+        'imageUrl',
+        this.selectedFile,
+        this.selectedFile.name
+      );
+    }
+
+    if (
+      this.UpdateBookForm.get('title')?.value &&
+      this.UpdateBookForm.get('description')?.value &&
+      this.UpdateBookForm.get('author')?.value &&
+      this.UpdateBookForm.get('category')?.value &&
+      this.selectedFile
+    ) {
       this.bookService
-        .updateBook(
-          this.data.id,
-          this.UpdateBookForm.get('title')?.value,
-          this.UpdateBookForm.get('description')?.value,
-          this.UpdateBookForm.get('author')?.value,
-          this.UpdateBookForm.get('imageUrl')?.value,
-          this.UpdateBookForm.get('category')?.value
-        )
+        .updateBook(this.data.id, updateFormData)
         .pipe(takeUntil(this.destroySub))
-        .subscribe(
-          (updatedBook) => {
+        .subscribe({
+          next: (updatedBook) => {
+            console.log('book updated here');
             this.bookService.refreshBookOnUpdate(updatedBook);
           },
-          (err) => {
-            this.formError = err.message || 'An error occurred while updating.';
+          error: (err: any) => {
+            this.formError =
+              err.message || 'An error occurred while submitting the form.';
             console.error(err);
-          }
-        );
+          },
+        });
       this.closeModal();
-    } else {
-      this.formError = 'Please correct the form.';
+      return;
     }
+    return;
   }
 
   closeModal() {

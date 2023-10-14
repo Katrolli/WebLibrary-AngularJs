@@ -35,7 +35,7 @@
         placeholder="Description"
       />
     </div>
-    <div class="relative rounded-md p-2">
+    <div class="relative rounded-md !pl-20 !flex !justify-center !items-center">
       <input type="file" (change)="onFileChange($event)" />
     </div>
     <div class="relative rounded-md p-2">
@@ -119,22 +119,8 @@
         placeholder="Description"
       />
     </div>
-    <div class="relative rounded-md p-2 text-center">
-      <p class="text-xl">Image</p>
-      <input
-        [ngClass]="{
-          'bg-red-500':
-            UpdateBookForm.controls['imageUrl'].invalid &&
-            UpdateBookForm.controls['imageUrl'].touched,
-          'text-white':
-            UpdateBookForm.controls['imageUrl'].invalid &&
-            UpdateBookForm.controls['imageUrl'].touched
-        }"
-        type="text"
-        formControlName="imageUrl"
-        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        placeholder="Image URL"
-      />
+    <div class="relative rounded-md !pl-20 !flex !justify-center !items-center">
+      <input type="file" (change)="onFileChange($event)" />
     </div>
     <div class="relative rounded-md p-2 text-center">
       <p class="text-xl">Category</p>
