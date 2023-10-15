@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { BookModal } from './book-modal/book-modal.component';
 import { enviroment } from 'src/env';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-books',
@@ -19,8 +20,6 @@ export class BooksComponent implements OnInit, OnDestroy {
   constructor(private bookService: BookService, private modal: MatDialog) {}
 
   ngOnInit(): void {
-    console.log(this.books);
-
     this.bookService.books
       .pipe(takeUntil(this.destroySub))
       .subscribe((books) => {

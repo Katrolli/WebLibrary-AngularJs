@@ -47,7 +47,7 @@ export class AuthenticationService {
     this.router.navigate(['/login']);
   }
 
-  private decodeToken(token: string): any {
+  public decodeToken(token: string): any {
     try {
       return jwt_decode(token);
     } catch (error) {
@@ -76,5 +76,12 @@ export class AuthenticationService {
       }
     }
     return null;
+  }
+
+  removeToken(token: string | null) {
+    if (token) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('UserData');
+    }
   }
 }

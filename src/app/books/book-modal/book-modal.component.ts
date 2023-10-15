@@ -155,18 +155,20 @@ export class BookModal implements OnDestroy, OnInit {
         this.selectedFile,
         this.selectedFile.name
       );
+    } else {
+      updateFormData.append('imageUrl', this.data.imageUrl);
     }
 
     if (
       this.UpdateBookForm.get('title')?.value &&
       this.UpdateBookForm.get('description')?.value &&
       this.UpdateBookForm.get('author')?.value &&
-      this.UpdateBookForm.get('category')?.value &&
-      this.selectedFile
+      this.UpdateBookForm.get('category')?.value
+      // this.selectedFile
     ) {
       this.bookService
         .updateBook(this.data.id, updateFormData)
-        .pipe(takeUntil(this.destroySub))
+        // .pipe(takeUntil(this.destroySub))
         .subscribe({
           next: (updatedBook) => {
             console.log('book updated here');

@@ -12,7 +12,7 @@
 </ng-template>
 
 <div *ngIf="books.length > 0; else noBooks" class="flex flex-wrap">
-  <div *ngFor="let book of books" class="bg-red-400 mt-7 w1/4 p-4 ml-20">
+  <div *ngFor="let book of books" class="bg-emerald-900 mt-7 w1/4 p-4 ml-20">
     <mat-card class="book-card h-96">
       <mat-card-header class="justify-center !pt-6">
         <mat-card-title>
@@ -32,9 +32,12 @@
         <img [src]="apiUrl + book.imageUrl" alt="Example image" />
       </mat-card-content>
       <mat-card-actions class="justify-center !pt-10">
-        <button mat-button (click)="toggleEdit(book)">Update</button>
-        <button *ngIf="book.editing" mat-button>Cancel</button>
-        <button mat-button (click)="onDeleteBook(book.id)">Delete</button>
+        <button mat-button (click)="toggleEdit(book)">
+          <p class="text-white font-bold">Update</p>
+        </button>
+        <button mat-button (click)="onDeleteBook(book.id)">
+          <p class="text-white font-bold">Delete</p>
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>

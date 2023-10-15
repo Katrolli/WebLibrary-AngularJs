@@ -17,13 +17,34 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (this.authService.isLoggedIn()) {
-      let newRequest = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${this.authService.getToken()}`,
-        },
-      });
-      return next.handle(newRequest);
+      const token = this.authService.getToken();
+
+      if (token && !this.isTokenExpired(token)) {
+        const newRequest = req.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return next.handle(newRequest);
+      } else {
+        this.authService.removeToken(token);
+      }
     }
     return next.handle(req);
+  }
+
+  private isTokenExpired(token: string): boolean {
+    const decoded: any = this.authService.decodeToken(token);
+
+    if (decoded.exp === undefined) {
+      return false;
+    }
+
+    const date = new Date(0);
+    date.setUTCSeconds(decoded.exp);
+
+    const isExpired = !(date.valueOf() > new Date().valueOf());
+
+    return isExpired;
   }
 }
