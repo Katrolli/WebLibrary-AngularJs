@@ -7,10 +7,14 @@ import {
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthenticationService) {}
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -28,6 +32,7 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(newRequest);
       } else {
         this.authService.removeToken(token);
+        this.router.navigate(['/login']);
       }
     }
     return next.handle(req);

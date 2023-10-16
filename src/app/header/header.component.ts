@@ -1,5 +1,8 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { HeaderModal } from './header-modal/header-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +11,27 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class HeaderComponent implements DoCheck {
   isLoggedIn: boolean = false;
-  userName: any;
+  user: {
+    name: string;
+    userId: string;
+  } = { name: '', userId: '' };
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(
+    private authService: AuthenticationService,
+    private modal: MatDialog
+  ) {}
 
   ngDoCheck(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
-    this.userName = this.setUserData();
+    this.user = this.setUserData();
+  }
+
+  toggleUpdateModal() {
+    this.modal.open(HeaderModal, {
+      data: {
+        id: this.user.userId,
+      },
+    });
   }
 
   onLogOut() {
@@ -25,7 +42,7 @@ export class HeaderComponent implements DoCheck {
     const data = localStorage.getItem('UserData');
     if (data) {
       let userObj = JSON.parse(data);
-      return userObj.name;
+      return userObj;
     }
   }
 }

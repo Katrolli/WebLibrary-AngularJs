@@ -39,11 +39,11 @@ export class BooksComponent implements OnInit, OnDestroy {
     console.log(this.books);
   }
 
-  toggleCreate() {
+  toggleCreateModal() {
     this.modal.open(BookModal);
   }
-  toggleEdit(book: any) {
-    // Include 'id' in the format object
+
+  toggleEditModal(book: any) {
     const format = {
       id: book.id,
       ...book,

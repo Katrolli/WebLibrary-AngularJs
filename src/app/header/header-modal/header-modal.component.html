@@ -1,0 +1,59 @@
+<div class="flex justify-center w-56">
+  <form [formGroup]="updateUserForm" class="space-y-8">
+    <div class="relative rounded-md pt-8 text-center mb-4">
+      <p>New Name</p>
+      <input
+        type="text"
+        formControlName="name"
+        [ngClass]="{
+          'bg-red-500':
+            updateUserForm.controls['name'].invalid &&
+            updateUserForm.controls['name'].touched,
+          'text-white':
+            updateUserForm.controls['name'].invalid &&
+            updateUserForm.controls['name'].touched
+        }"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="name"
+      />
+    </div>
+
+    <div class="relative rounded-md pt-8 text-center">
+      <p>New password</p>
+      <input
+        type="password"
+        [ngClass]="{
+          'bg-red-500':
+            updateUserForm.controls['password'].invalid &&
+            updateUserForm.controls['password'].touched,
+          'text-white':
+            updateUserForm.controls['password'].invalid &&
+            updateUserForm.controls['password'].touched
+        }"
+        formControlName="password"
+        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+        placeholder="password"
+      />
+    </div>
+    <div class="flex justify-center pt-4 space-x-4">
+      <button
+        *ngIf="!formError"
+        (click)="submitUpdateUserForm()"
+        class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+      >
+        Submit
+      </button>
+      <button
+        (click)="closeModal()"
+        class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
+      >
+        Close
+      </button>
+    </div>
+    <div class="flex justify-center pt-2">
+      <p *ngIf="formError" class="text-red-600">
+        {{ formError }}
+      </p>
+    </div>
+  </form>
+</div>

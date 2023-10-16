@@ -1,7 +1,7 @@
 <div class="flex flex-row justify-center pt-4">
   <button
     class="bg-purple-500 hover:bg-purple-300 text-white hover:text-black font-bold py-2 px-4 border-b-4 hover:border-purple-400 rounded"
-    (click)="toggleCreate()"
+    (click)="toggleCreateModal()"
   >
     Crate New Book
   </button>
@@ -32,11 +32,11 @@
         <img [src]="apiUrl + book.imageUrl" alt="Example image" />
       </mat-card-content>
       <mat-card-actions class="justify-center !pt-10">
-        <button mat-button (click)="toggleEdit(book)">
-          <p class="text-white font-bold">Update</p>
+        <button mat-button (click)="toggleEditModal(book)">
+          <p class="text-white font-bold hover:text-black">Update</p>
         </button>
         <button mat-button (click)="onDeleteBook(book.id)">
-          <p class="text-white font-bold">Delete</p>
+          <p class="text-white font-bold hover:text-black">Delete</p>
         </button>
       </mat-card-actions>
     </mat-card>

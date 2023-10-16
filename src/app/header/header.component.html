@@ -6,17 +6,36 @@
   <button *ngIf="!isLoggedIn" routerLink="/signup" class="hover:text-black">
     Signup
   </button>
-  <button *ngIf="isLoggedIn" routerLink="/books" class="hover:text-black">
-    Books
+
+  <button mat-button [matMenuTriggerFor]="mainMenu" *ngIf="isLoggedIn">
+    <p class="hover:text-black">Menu</p>
   </button>
+
+  <mat-menu #mainMenu="matMenu">
+    <button [routerLink]="['/books']" mat-menu-item>Books</button>
+    <button
+      [routerLink]="['/categories']"
+      class="hover:text-black"
+      mat-menu-item
+    >
+      Categories
+    </button>
+    <button
+      class="hover:text-black"
+      mat-menu-item
+      (click)="toggleUpdateModal()"
+    >
+      Change your data
+    </button>
+  </mat-menu>
 
   <div class="flex-grow"></div>
 
-  <ng-container *ngIf="isLoggedIn && userName; then loggedInTemplate">
+  <ng-container *ngIf="isLoggedIn && user; then loggedInTemplate">
   </ng-container>
 
   <ng-template #loggedInTemplate>
-    <span class="text-white">Welcome : {{ userName }}</span>
+    <span class="text-white">Welcome : {{ user.name }}</span>
     <button *ngIf="isLoggedIn" (click)="onLogOut()" class="hover:text-black">
       Logout
     </button>

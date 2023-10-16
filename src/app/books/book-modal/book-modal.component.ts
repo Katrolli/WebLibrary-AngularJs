@@ -40,7 +40,6 @@ export class BookModal implements OnDestroy, OnInit {
     this.CreateBookForm = this.fb.group({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      // imageUrl: new FormControl('', Validators.required),
       category: new FormControl('', Validators.required),
     });
     this.UpdateBookForm = this.fb.group({
@@ -83,8 +82,10 @@ export class BookModal implements OnDestroy, OnInit {
 
     if (input.files && input.files[0]) {
       this.selectedFile = input.files[0];
+      this.formError = null;
     }
   }
+
   submitCreateForm() {
     console.log('entered form');
 
@@ -112,6 +113,8 @@ export class BookModal implements OnDestroy, OnInit {
         this.selectedFile,
         this.selectedFile.name
       );
+    } else {
+      return (this.formError = 'Please select an image.');
     }
     console.log('before book service');
 
@@ -164,7 +167,6 @@ export class BookModal implements OnDestroy, OnInit {
       this.UpdateBookForm.get('description')?.value &&
       this.UpdateBookForm.get('author')?.value &&
       this.UpdateBookForm.get('category')?.value
-      // this.selectedFile
     ) {
       this.bookService
         .updateBook(this.data.id, updateFormData)

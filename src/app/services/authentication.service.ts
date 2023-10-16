@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthenticateClient } from '../authenticate.client';
+import { AuthenticateClient } from './authenticate.client';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
 
@@ -12,8 +12,9 @@ export class AuthenticationService {
   constructor(private authClient: AuthenticateClient, private router: Router) {}
 
   public login(email: string, password: string) {
-    this.authClient.login(email, password).subscribe((token) => {
-      localStorage.setItem('accessToken', token);
+    this.authClient.login(email, password).subscribe((response) => {
+      const token = response.access_token; // extract the token from the response
+      localStorage.setItem('accessToken', token); // store the token as a string
       const decodedToken = this.decodeToken(token);
       this.setUserData(decodedToken);
       this.router.navigate(['/books']);
@@ -67,10 +68,10 @@ export class AuthenticationService {
 
   public getToken(): string | null {
     const stored = localStorage.getItem('accessToken');
+
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
-        return parsed.access_token || null;
+        return stored || null;
       } catch (e) {
         return null;
       }

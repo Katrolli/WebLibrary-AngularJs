@@ -8,15 +8,11 @@ import { Observable } from 'rxjs';
 export class AuthenticateClient {
   constructor(private httpClient: HttpClient) {}
 
-  public login(email: string, password: string): Observable<string> {
-    return this.httpClient.post(
-      enviroment.api_url + '/auth/login',
-      {
-        email: email,
-        password: password,
-      },
-      { responseType: 'text' }
-    );
+  public login(email: string, password: string): Observable<any> {
+    return this.httpClient.post(enviroment.api_url + '/auth/login', {
+      email: email,
+      password: password,
+    });
   }
 
   public adminLogin(email: string, password: string): Observable<string> {
@@ -46,5 +42,11 @@ export class AuthenticateClient {
         responseType: 'text',
       }
     );
+  }
+
+  public updateUser(userId: string, payload: object): Observable<any> {
+    const url = `${enviroment.api_url}/auth/update/${userId}`;
+
+    return this.httpClient.post(url, payload);
   }
 }
