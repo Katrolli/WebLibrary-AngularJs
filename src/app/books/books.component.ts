@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { BookModal } from './book-modal/book-modal.component';
 import { enviroment } from 'src/env';
-import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-books',
@@ -47,8 +46,8 @@ export class BooksComponent implements OnInit, OnDestroy {
     const format = {
       id: book.id,
       ...book,
-      author: book.author.name,
-      category: book.category.name,
+      author: book.author.id,
+      category: book.category.id,
     };
     this.modal.open(BookModal, {
       data: format,

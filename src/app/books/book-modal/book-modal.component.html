@@ -1,5 +1,4 @@
 <!-- start of create form -->
-
 <div class="flex justify-center w-56" *ngIf="!data">
   <form [formGroup]="CreateBookForm" class="space-y-4">
     <div class="relative rounded-md pt-8">
@@ -39,8 +38,8 @@
       <input type="file" (change)="onFileChange($event)" />
     </div>
     <div class="relative rounded-md p-2">
-      <input
-        type="text"
+      <select
+        formControlName="category"
         [ngClass]="{
           'bg-red-500':
             CreateBookForm.controls['category'].invalid &&
@@ -49,11 +48,34 @@
             CreateBookForm.controls['category'].invalid &&
             CreateBookForm.controls['category'].touched
         }"
-        formControlName="category"
-        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        placeholder="Category"
-      />
+        class="form-select block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      >
+        <option value="" disabled>Select Category</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
     </div>
+    <div class="relative rounded-md p-2">
+      <select
+        formControlName="author"
+        [ngClass]="{
+          'bg-red-500':
+            CreateBookForm.controls['author'].invalid &&
+            CreateBookForm.controls['author'].touched,
+          'text-white':
+            CreateBookForm.controls['author'].invalid &&
+            CreateBookForm.controls['author'].touched
+        }"
+        class="form-select block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      >
+        <option value="" disabled>Select Author</option>
+        <option *ngFor="let author of authors" [value]="author.id">
+          {{ author.name }}
+        </option>
+      </select>
+    </div>
+
     <div class="flex justify-center pt-4 space-x-4">
       <button
         *ngIf="!formError"
@@ -124,37 +146,51 @@
     </div>
     <div class="relative rounded-md p-2 text-center">
       <p class="text-xl">Category</p>
-      <input
+      <select
+        formControlName="category"
         [ngClass]="{
           'bg-red-500':
-            UpdateBookForm.controls['category'].invalid &&
-            UpdateBookForm.controls['category'].touched,
+            CreateBookForm.controls['category'].invalid &&
+            CreateBookForm.controls['category'].touched,
           'text-white':
-            UpdateBookForm.controls['category'].invalid &&
-            UpdateBookForm.controls['category'].touched
+            CreateBookForm.controls['category'].invalid &&
+            CreateBookForm.controls['category'].touched
         }"
-        type="text"
-        formControlName="category"
-        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        placeholder="Category"
-      />
+        class="form-select block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      >
+        <!-- <option [value]="" disabled></option> -->
+        <option
+          *ngFor="let category of categories"
+          [ngValue]="category.id"
+          [selected]="category.id"
+        >
+          {{ category.name }}
+        </option>
+      </select>
     </div>
     <div class="relative rounded-md p-2 text-center">
       <p class="text-xl">Author</p>
-      <input
+      <select
+        formControlName="author"
         [ngClass]="{
           'bg-red-500':
-            UpdateBookForm.controls['author'].invalid &&
-            UpdateBookForm.controls['author'].touched,
+            CreateBookForm.controls['author'].invalid &&
+            CreateBookForm.controls['author'].touched,
           'text-white':
-            UpdateBookForm.controls['author'].invalid &&
-            UpdateBookForm.controls['author'].touched
+            CreateBookForm.controls['author'].invalid &&
+            CreateBookForm.controls['author'].touched
         }"
-        type="text"
-        formControlName="author"
-        class="form-input block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        placeholder="Author"
-      />
+        class="form-select block w-full sm:text-sm sm:leading-5 text-center border-2 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+      >
+        <!-- <option [value]="" disabled>{{ data.author }}</option> -->
+        <option
+          *ngFor="let author of authors"
+          [ngValue]="author.id"
+          [selected]="author.id"
+        >
+          {{ author.name }}
+        </option>
+      </select>
     </div>
     <div class="flex justify-center pt-4 space-x-4">
       <button

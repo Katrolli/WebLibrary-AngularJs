@@ -26,6 +26,7 @@ import { BookModal } from './books/book-modal/book-modal.component';
 import { HeaderModal } from './header/header-modal/header-modal.component';
 import { ErrorInterceptor } from './errors/error.interceptor';
 import { ErrorModalComponent } from './errors/error.modal.component';
+import { BookCardComponent } from './books/book-card/book-card.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ErrorModalComponent } from './errors/error.modal.component';
     BookModal,
     ErrorModalComponent,
     HeaderModal,
+    BookCardComponent,
   ],
   imports: [
     BrowserModule,

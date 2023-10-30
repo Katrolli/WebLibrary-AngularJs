@@ -13,8 +13,8 @@ export class AuthenticationService {
 
   public login(email: string, password: string) {
     this.authClient.login(email, password).subscribe((response) => {
-      const token = response.access_token; // extract the token from the response
-      localStorage.setItem('accessToken', token); // store the token as a string
+      const token = response.access_token;
+      localStorage.setItem('accessToken', token);
       const decodedToken = this.decodeToken(token);
       this.setUserData(decodedToken);
       this.router.navigate(['/books']);
@@ -22,7 +22,8 @@ export class AuthenticationService {
   }
 
   public adminLogin(email: string, password: string) {
-    this.authClient.adminLogin(email, password).subscribe((token) => {
+    this.authClient.adminLogin(email, password).subscribe((response) => {
+      const token = response.access_token;
       localStorage.setItem('accessToken', token);
       const decodedToken = this.decodeToken(token);
       this.setUserData(decodedToken);

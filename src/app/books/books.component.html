@@ -8,37 +8,24 @@
 </div>
 
 <ng-template #noBooks>
-  <p>No books available.</p>
+  <div class="flex justify-center">
+    <p>No books available.</p>
+  </div>
 </ng-template>
 
-<div *ngIf="books.length > 0; else noBooks" class="flex flex-wrap">
-  <div *ngFor="let book of books" class="bg-emerald-900 mt-7 w1/4 p-4 ml-20">
-    <mat-card class="book-card h-96">
-      <mat-card-header class="justify-center !pt-6">
-        <mat-card-title>
-          <span>Title: {{ book.title }}</span>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="text-center !pt-5">
-        <span>Description: {{ book.description }}</span>
-      </mat-card-content>
-      <mat-card-content class="text-center !pt-5">
-        <span>Author: {{ book.author.name }}</span>
-      </mat-card-content>
-      <mat-card-content class="text-center !pt-5">
-        <span>Category: {{ book.category.name }}</span>
-      </mat-card-content>
-      <mat-card-content class="text-center !pt-2">
-        <img [src]="apiUrl + book.imageUrl" alt="Example image" />
-      </mat-card-content>
-      <mat-card-actions class="justify-center !pt-10">
-        <button mat-button (click)="toggleEditModal(book)">
-          <p class="text-white font-bold hover:text-black">Update</p>
-        </button>
-        <button mat-button (click)="onDeleteBook(book.id)">
-          <p class="text-white font-bold hover:text-black">Delete</p>
-        </button>
-      </mat-card-actions>
-    </mat-card>
+<div
+  *ngIf="books.length > 0; else noBooks"
+  class="flex flex-wrap justify-start"
+>
+  <div
+    *ngFor="let book of books"
+    class="bg-emerald-900 mt-7 w-1/4 p-8 ml-20 rounded-lg shadow-lg"
+  >
+    <app-book-card
+      [book]="book"
+      [apiUrl]="apiUrl"
+      (onDelete)="onDeleteBook($event)"
+      (onEdit)="toggleEditModal($event)"
+    ></app-book-card>
   </div>
 </div>

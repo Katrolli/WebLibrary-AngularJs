@@ -8,6 +8,8 @@ import {
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 import { BookService } from '../services/book.service';
+import { CategoryService } from 'src/app/categories/services/categories.service';
+import { AuthorService } from 'src/app/authors/services/author.service';
 
 export interface BookData {
   id: string;
@@ -23,6 +25,9 @@ export interface BookData {
   templateUrl: './book-modal.component.html',
 })
 export class BookModal implements OnDestroy, OnInit {
+  public categories: any[] = [];
+  public authors: any[] = [];
+
   public CreateBookForm!: FormGroup;
   public UpdateBookForm!: FormGroup;
   formError: string | null = null;
@@ -31,18 +36,41 @@ export class BookModal implements OnDestroy, OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: BookData,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private bookService: BookService,
+    private categoryService: CategoryService,
+    private authorService: AuthorService,
     private modal: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.CreateBookForm = this.fb.group({
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        console.log('categories fetched', categories);
+      },
+      error: (err) => {
+        console.log('error fetching categories', err);
+      },
+    });
+
+    this.authorService.getAuthors().subscribe({
+      next: (authors) => {
+        this.authors = authors;
+        console.log('authors fetched', authors);
+      },
+      error: (err) => {
+        console.log('error fetching authors', err);
+      },
+    });
+
+    this.CreateBookForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       category: new FormControl('', Validators.required),
+      author: new FormControl('', Validators.required),
     });
-    this.UpdateBookForm = this.fb.group({
+    this.UpdateBookForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       imageUrl: new FormControl('', Validators.required),
@@ -106,6 +134,7 @@ export class BookModal implements OnDestroy, OnInit {
       'category',
       this.CreateBookForm.get('category')?.value
     );
+    CreateFormData.append('author', this.CreateBookForm.get('author')?.value);
 
     if (this.selectedFile) {
       CreateFormData.append(
@@ -139,6 +168,7 @@ export class BookModal implements OnDestroy, OnInit {
       console.log('failed validation');
       return (this.formError = 'Please correct the form.');
     }
+
     this.formError = null;
     const updateFormData = new FormData();
     updateFormData.append('title', this.UpdateBookForm.get('title')?.value);
@@ -148,9 +178,12 @@ export class BookModal implements OnDestroy, OnInit {
     );
     updateFormData.append(
       'category',
-      this.UpdateBookForm.get('category')?.value
+      this.UpdateBookForm.get('category')?.value || this.data.category
     );
-    updateFormData.append('author', this.UpdateBookForm.get('author')?.value);
+    updateFormData.append(
+      'author',
+      this.UpdateBookForm.get('author')?.value || this.data.author
+    );
 
     if (this.selectedFile) {
       updateFormData.append(
